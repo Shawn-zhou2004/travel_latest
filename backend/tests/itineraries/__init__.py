@@ -1,0 +1,1 @@
+"""Itinerary aggregate tests."""

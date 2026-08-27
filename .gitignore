@@ -1,0 +1,78 @@
+# Environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Node and frontend artifacts
+node_modules/
+coverage/
+.vite/
+*.tsbuildinfo
+frontend-c/dist/
+frontend-b/dist/
+
+# Local infrastructure and worktree artifacts
+.docker/
+.worktrees/
+.superpowers/
+.workbuddy/
+
+# Local IDE tooling artifacts
+.agents/
+.codegraph/
+.trae-html-share-packages/
+skills-lock.json
+/frontend-c/_*.ps1
+/frontend-c/_tmp_*.txt
+/frontend-c/vite.config.ts.timestamp-*.mjs
+/frontend-b/_*.ps1
+/frontend-b/_tmp_*.txt
+
+# Personal/temporary build artifacts at repo root
+resume_build/
+resume_*.md
+resume_unpacked/
+resume_verify/
+build_resume_*.js
+build_resume_*.py
+build_intro_docx.py
+alltext.txt
+chinesetext.txt
+longtext.txt
+testcount_tmp.txt
+/.{10
+/pyproject.toml
+项目博客-AI旅行规划平台.md
+/pdf2docx_convert.py
+/frontend-c/catalog-unavailable.png
+
+# Personal interview prep materials (not part of the open-source project)
+docs/面试准备/
+docs/ai-workflow-interview-notes/
+docs/langgraph-workflow-walkthrough/
+blog_assets/
+LangGraph代码走读-事件分发到八节点全链路精讲.md
+
+# Editors and operating system files
+.idea/
+.vscode/
+*.log
+.DS_Store
+Thumbs.db

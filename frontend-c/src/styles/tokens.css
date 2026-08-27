@@ -1,0 +1,110 @@
+:root {
+  --field-ink: #132b3a;
+  --field-ink-soft: #48616e;
+  --field-deep: #12394a;
+  --field-teal: #087e78;
+  --field-teal-soft: #d9f0eb;
+  --field-saffron: #f2a34c;
+  --field-coral: #d86e58;
+  --field-paper: #f5f8f6;
+  --field-white: #ffffff;
+  --field-line: #d5e1dd;
+  --field-muted: #69808a;
+  --field-shadow: 0 22px 56px rgba(19, 43, 58, .12);
+  --field-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --travel-sky: #e5f3ef;
+  --travel-sand: #f9f0df;
+  --travel-radius: 16px;
+  --travel-radius-sm: 10px;
+  --travel-container: 1240px;
+  /* 动效 Token：统一全站时长 / 缓动 / 阴影基准 */
+  --motion-fast: 150ms;
+  --motion-base: 220ms;
+  --motion-slow: 320ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+  --shadow-soft: 0 4px 12px rgba(19, 43, 58, 0.06);
+  --shadow-lift: 0 12px 32px rgba(19, 43, 58, 0.10), 0 4px 12px rgba(19, 43, 58, 0.06);
+  --shadow-focus: 0 0 0 3px rgba(242, 163, 76, 0.4);
+  --el-color-primary: var(--field-teal);
+  --el-color-primary-light-3: #54aaa2;
+  --el-color-primary-light-5: #87c6be;
+  --el-color-primary-light-8: #e3f3f0;
+  --el-border-radius-base: 10px;
+  --el-border-color: var(--field-line);
+  --el-text-color-primary: var(--field-ink);
+  --el-text-color-regular: var(--field-ink-soft);
+  font-family: "Avenir Next", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: var(--field-ink);
+  background: var(--field-paper);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+html, body, #app { margin: 0; min-height: 100%; }
+body { background: var(--field-paper); }
+button, input, textarea, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { transition: background-color var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard), transform var(--motion-fast) var(--ease-standard), box-shadow var(--motion-fast) var(--ease-standard); }
+button:active, .el-button:active { transform: translateY(1px); }
+a { transition: color var(--motion-fast) var(--ease-standard), background-color var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard), transform var(--motion-fast) var(--ease-standard), opacity var(--motion-fast) var(--ease-standard); }
+:focus-visible { outline: 3px solid var(--field-saffron); outline-offset: 3px; }
+.el-button { border-radius: 10px; font-weight: 700; transition: background-color var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard), transform var(--motion-fast) var(--ease-standard), box-shadow var(--motion-fast) var(--ease-standard); }
+.el-button:hover:not(.is-disabled) { transform: translateY(-1px); }
+.el-button:active:not(.is-disabled) { transform: translateY(0) scale(0.98); }
+.el-button.is-disabled, .el-button.is-loading { opacity: 0.55; }
+.el-input__wrapper { box-shadow: 0 0 0 1px var(--field-line) inset !important; transition: box-shadow var(--motion-fast) var(--ease-standard) !important; }
+.el-input__wrapper:hover { box-shadow: 0 0 0 1px var(--field-teal-light, #54aaa2) inset !important; }
+.el-input__wrapper.is-focus { box-shadow: 0 0 0 2px var(--field-teal) inset, 0 0 0 4px var(--field-teal-soft) inset !important; }
+.el-dialog { transition: opacity var(--motion-base) var(--ease-out), transform var(--motion-base) var(--ease-out) !important; }
+
+/* ============ 全局入场动画工具类（CSS-only，挂载即播放，支持 --reveal-index 错峰） ============ */
+.reveal { animation: reveal-up var(--motion-slow) var(--ease-out) both; animation-delay: calc(var(--reveal-index, 0) * 70ms); }
+.reveal-soft { animation: reveal-soft var(--motion-slow) var(--ease-out) both; animation-delay: calc(var(--reveal-index, 0) * 70ms); }
+@keyframes reveal-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes reveal-soft { from { opacity: 0; } to { opacity: 1; } }
+
+/* ============ 滚动触发入场（配合 useReveal composable：[data-reveal] 进入视口加 .is-revealed） ============ */
+[data-reveal] { opacity: 0; transform: translateY(14px); transition: opacity var(--motion-slow) var(--ease-out), transform var(--motion-slow) var(--ease-out); transition-delay: calc(var(--reveal-index, 0) * 70ms); will-change: opacity, transform; }
+[data-reveal].is-revealed { opacity: 1; transform: none; }
+
+/* ============ 旋转加载工具类 ============ */
+.spin { animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============ 骨架屏 shimmer 工具类 ============ */
+.shimmer { background: linear-gradient(90deg, var(--field-line) 25%, var(--field-paper) 50%, var(--field-line) 75%); background-size: 200% 100%; animation: shimmer 1.8s ease-in-out infinite; }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ============ Vue Transition 全局命名类（淡入 / 缩放 / 上滑 / 列表） ============ */
+.fade-enter-active, .fade-leave-active { transition: opacity var(--motion-base) var(--ease-out); }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+.scale-enter-active, .scale-leave-active { transition: opacity var(--motion-base) var(--ease-out), transform var(--motion-base) var(--ease-out); }
+.scale-enter-from, .scale-leave-to { opacity: 0; transform: scale(0.96); }
+.scale-leave-active { position: absolute; left: 0; right: 0; }
+.slide-up-enter-active, .slide-up-leave-active { transition: opacity var(--motion-base) var(--ease-out), transform var(--motion-base) var(--ease-out); overflow: hidden; }
+.slide-up-enter-from, .slide-up-leave-to { opacity: 0; transform: translateY(10px); }
+.slide-down-enter-active, .slide-down-leave-active { transition: max-height var(--motion-base) var(--ease-out), opacity var(--motion-base) var(--ease-out), padding var(--motion-base) var(--ease-out); overflow: hidden; }
+.slide-down-enter-from, .slide-down-leave-to { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; }
+.slide-down-enter-to, .slide-down-leave-from { max-height: 600px; opacity: 1; }
+.list-enter-active, .list-leave-active { transition: opacity var(--motion-base) var(--ease-out), transform var(--motion-base) var(--ease-out); }
+.list-enter-from, .list-leave-to { opacity: 0; transform: translateY(10px); }
+.list-leave-active { position: absolute; }
+.list-move { transition: transform var(--motion-base) var(--ease-out); }
+
+/* ============ 全局滚动条轻量化美化 ============ */
+* { scrollbar-width: thin; scrollbar-color: var(--field-line) transparent; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--field-line); border-radius: 4px; transition: background var(--motion-fast) var(--ease-standard); }
+::-webkit-scrollbar-thumb:hover { background: var(--field-teal); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  .reveal, .reveal-soft { animation: none !important; }
+  .spin, .shimmer { animation: none !important; }
+}
