@@ -32,12 +32,24 @@
 ## 仓库结构
 
 ```
-backend/          FastAPI 模块化单体（app/modules 按领域拆分，tests 单测覆盖）
-frontend-c/       消费端 Vue 3 应用（行程规划、社区、订单、会员、AI 助手）
-frontend-b/       管理端 Vue 3 应用（用户、AI 运营、知识治理）
-docs/             需求文档、API 设计、领域事件契约、实施计划
+backend/           FastAPI 模块化单体（app/modules 按领域拆分，tests 单测覆盖）
+frontend-c/        消费端 Vue 3 应用（行程规划、社区、订单、会员、AI 助手）
+frontend-b/        管理端 Vue 3 应用（用户、AI 运营、知识治理）
+docs/              设计与工程文档（见下方导航）
 docker-compose.yml 本地基础设施：MySQL / Redis / RabbitMQ / Elasticsearch / Nginx
 ```
+
+### 文档导航
+
+| 目录 | 内容 |
+|---|---|
+| `docs/AI旅行平台需求文档.md` / `docs/API设计.md` | 需求与 API 契约 |
+| `docs/项目分包结构与业务职责详解.md` | 模块划分与各域职责 |
+| `docs/superpowers/specs/`（14 份） | 关键特性设计文档：分域 RAG、受控多智能体、智能行程规划、会员支付、支付宝二维码、群聊实时消息、显式 AI 记忆等 |
+| `docs/superpowers/plans/`（25 份） | 与设计文档一一对应的实施计划与验收清单 |
+| `docs/contracts/` | 权限矩阵、领域事件契约 |
+| `docs/handoffs/` | 各业务域模块交接说明与主智能体集成报告 |
+| `docs/agent-briefs/` | 各业务域智能体任务简报 |
 
 ## 快速开始
 
