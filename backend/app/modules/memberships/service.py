@@ -56,7 +56,8 @@ class MembershipService:
         if plan.status != "draft":
             raise MembershipError("MEMBERSHIP_PLAN_PUBLISH_NOT_ALLOWED", "Only draft membership plans can be published.")
         plan.status = "published"
-        self._audit(actor_id, "membership_plan.published", "membership_plan", plan.id, "Published membership plan.", {"status": plan.status})
+        plan.purchasable = True
+        self._audit(actor_id, "membership_plan.published", "membership_plan", plan.id, "Published membership plan.", {"status": plan.status, "purchasable": plan.purchasable})
         await self.session.commit()
         return plan
 
