@@ -1,6 +1,7 @@
 import { api } from '@/services/api'
 import { clearSession, getAccessToken } from '@/services/session'
 import { refreshAccessToken } from '@/services/api'
+import { newClientId } from '@/services/id'
 
 export interface AiConversation { id: string; title: string | null; created_at: string; updated_at: string }
 export interface AiCitation { document_id: string; chunk_id: string; source_type: string; source_id: string; source_host?: string; city_code: string; content: string }
@@ -70,7 +71,7 @@ async function fetchSse(path: string, init: RequestInit) {
     headers: {
       Accept: 'text/event-stream',
       'Content-Type': 'application/json',
-      'X-Request-ID': crypto.randomUUID(),
+      'X-Request-ID': newClientId(),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
   })

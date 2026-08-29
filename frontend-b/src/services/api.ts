@@ -1,5 +1,6 @@
 import axios, { type AxiosError, type AxiosInstance } from 'axios'
 import { clearSession, getAccessToken, saveSession, type SessionUser } from './session'
+import { newClientId } from './id'
 
 export interface ApiError extends Error {
   code: string
@@ -23,7 +24,7 @@ export function normalizeApiError(error: unknown): ApiError {
 export function createApiClient(baseURL = ''): AxiosInstance {
   const api = axios.create({ baseURL: baseURL ? `${baseURL.replace(/\/$/, '')}/api/v1` : '/api/v1', withCredentials: true })
   api.interceptors.request.use((config) => {
-    config.headers.set('X-Request-ID', crypto.randomUUID())
+    config.headers.set('X-Request-ID', newClientId())
     const token = getAccessToken()
     if (token) config.headers.set('Authorization', `Bearer ${token}`)
     return config

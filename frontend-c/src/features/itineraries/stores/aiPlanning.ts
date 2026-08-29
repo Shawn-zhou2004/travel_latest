@@ -1,6 +1,7 @@
 import { computed, ref, shallowRef } from 'vue'
 import { defineStore } from 'pinia'
 import { normalizeApiError } from '@/services/api'
+import { newClientId } from '@/services/id'
 import { getMyAIEntitlements, type AIEntitlements } from '@/features/ai/assistantApi'
 import {
   createGenerationJob,
@@ -187,7 +188,7 @@ export const useAiPlanningStore = defineStore('ai-planning', () => {
     quotaExhausted.value = false
 
     try {
-      const createdJob = await createGenerationJob(lastRequest.value, crypto.randomUUID())
+      const createdJob = await createGenerationJob(lastRequest.value, newClientId())
       if (runVersion !== pollVersion.value) return
       applyJob(createdJob)
       await poll(createdJob.id, runVersion)
@@ -233,7 +234,7 @@ export const useAiPlanningStore = defineStore('ai-planning', () => {
     try {
       const sourceBaseVersion = lastRequest.value?.base_version ?? preview.value?.base_version
       const version = currentJob.target_itinerary_id && sourceBaseVersion ? sourceBaseVersion : 1
-      const result = await applyGenerationPreview(currentJob.id, currentJob.preview_id, version, crypto.randomUUID())
+      const result = await applyGenerationPreview(currentJob.id, currentJob.preview_id, version, newClientId())
       if (result.code === 'APPLIED') {
         appliedItineraryId.value = currentJob.target_itinerary_id
         message.value = '预览已写入你的行程，路线计算正在排队。'

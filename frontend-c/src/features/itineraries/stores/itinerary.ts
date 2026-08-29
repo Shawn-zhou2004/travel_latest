@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { applyItineraryOperation, getItinerary, getRouteCalculation, type ItineraryAccessRole, type ItinerarySnapshot, type OperationResult } from '../api'
+import { newClientId } from '@/services/id'
 
 export type WorkspaceState = 'loading' | 'empty' | 'saved' | 'conflict' | 'unavailable'
 
@@ -49,7 +50,7 @@ export const useItineraryStore = defineStore('itinerary-workspace', () => {
   async function apply(operationType: string, payload: Record<string, unknown>): Promise<OperationResult | undefined> {
     if (!itineraryId.value || !canEdit.value) return undefined
     try {
-      const result = await applyItineraryOperation(itineraryId.value, version.value, crypto.randomUUID(), operationType, payload)
+      const result = await applyItineraryOperation(itineraryId.value, version.value, newClientId(), operationType, payload)
       if (result.code === 'APPLIED' && result.snapshot && result.current_version) setSnapshot(result.snapshot, result.current_version)
       else if (result.code === 'VERSION_CONFLICT') state.value = 'conflict'
       else if (result.code === 'MAP_UNAVAILABLE') state.value = 'unavailable'

@@ -1,5 +1,6 @@
 import axios, { type AxiosError, type AxiosInstance } from 'axios'
 import { clearSession, getAccessToken, saveSession, type SessionUser } from './session'
+import { newClientId } from './id'
 
 export interface ApiError extends Error {
   code: string
@@ -28,7 +29,7 @@ export function normalizeApiError(error: unknown): ApiError {
 }
 
 function requestId() {
-  return crypto.randomUUID()
+  return newClientId()
 }
 
 export function createApiClient(baseURL = ''): AxiosInstance {

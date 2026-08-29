@@ -1,4 +1,5 @@
 import { api } from '@/services/api'
+import { newClientId } from '@/services/id'
 
 export type SearchType = 'train' | 'flight' | 'hotel' | 'ride'
 export type FulfillmentStatus = 'pending_confirmation' | 'confirming' | 'confirmed' | 'failed' | 'not_supported'
@@ -86,11 +87,11 @@ export interface TravelSearchRequest {
 }
 
 export function createTravelSearch(payload: TravelSearchRequest) {
-  return api.post<TravelSearchJob>('/travel-search-jobs', payload, { headers: { 'Idempotency-Key': crypto.randomUUID() } })
+  return api.post<TravelSearchJob>('/travel-search-jobs', payload, { headers: { 'Idempotency-Key': newClientId() } })
 }
 
 export function createTravelOrder(offerId: string, passengers: TravelOrderPassenger[] = []) {
-  return api.post<TravelOrder>('/travel-orders', { offer_id: offerId, passengers }, { headers: { 'Idempotency-Key': crypto.randomUUID() } })
+  return api.post<TravelOrder>('/travel-orders', { offer_id: offerId, passengers }, { headers: { 'Idempotency-Key': newClientId() } })
 }
 
 export function fetchTravelOrders() {

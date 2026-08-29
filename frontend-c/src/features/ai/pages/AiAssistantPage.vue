@@ -9,6 +9,7 @@ import { listItineraries, type ItineraryRecord } from '@/features/itineraries/ap
 import { useAiPlanningStore } from '@/features/itineraries/stores/aiPlanning'
 import { getMySettings, type UserSettings } from '@/features/settings/api'
 import { useReveal } from '@/composables/useReveal'
+import { newClientId } from '@/services/id'
 
 const conversations = ref<AiConversation[]>([])
 const memories = ref<AiMemory[]>([])
@@ -77,8 +78,8 @@ async function ask() {
   asking.value = true
   error.value = ''
   streamStatus.value = '正在检索已审核旅行资料'
-  const optimistic: AiMessage = { id: crypto.randomUUID(), role: 'user', content: { text }, client_message_id: null, created_at: new Date().toISOString() }
-  const provisional: AiMessage = { id: crypto.randomUUID(), role: 'assistant', content: { text: '' }, client_message_id: null, created_at: new Date().toISOString() }
+  const optimistic: AiMessage = { id: newClientId(), role: 'user', content: { text }, client_message_id: null, created_at: new Date().toISOString() }
+  const provisional: AiMessage = { id: newClientId(), role: 'assistant', content: { text: '' }, client_message_id: null, created_at: new Date().toISOString() }
   let runId = ''
   messages.value.push(optimistic, provisional)
   prompt.value = ''
@@ -92,7 +93,7 @@ async function ask() {
     if (event.type === 'failed') { messages.value = messages.value.filter((item) => item.id !== provisional.id); error.value = event.message; streamStatus.value = '' }
   }
   try {
-    await streamAiAssistant(activeId.value, { text, client_message_id: crypto.randomUUID() }, onEvent)
+    await streamAiAssistant(activeId.value, { text, client_message_id: newClientId() }, onEvent)
   } catch (cause) {
     if (runId) {
       try { await replayAiAssistantRun(runId, onEvent) } catch { error.value = normalizeApiError(cause).message }

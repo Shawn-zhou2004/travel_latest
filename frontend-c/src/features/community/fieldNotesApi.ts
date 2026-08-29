@@ -1,6 +1,7 @@
 import { api } from '@/services/api'
 import type { ItineraryRecord, ItinerarySnapshot } from '@/features/itineraries/api'
 import { getPrivateImageUrl } from '@/features/media/api'
+import { newClientId } from '@/services/id'
 
 export type FieldNoteStatus = 'draft' | 'pending_review' | 'published' | 'hidden' | 'rejected'
 export type FieldNoteSort = 'latest' | 'recommended'
@@ -84,7 +85,7 @@ export async function listMyFieldNotes() {
   return data
 }
 
-export async function copyFieldNote(postId: string, idempotencyKey: string = crypto.randomUUID()) {
+export async function copyFieldNote(postId: string, idempotencyKey: string = newClientId()) {
   const { data } = await api.post<FieldNoteCopyResult>(`/posts/${postId}:copy-itinerary`, {}, {
     headers: { 'Idempotency-Key': idempotencyKey },
   })

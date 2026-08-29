@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { createTravelOrderRefund, type RefundStatus, type TravelOrder, type TravelOrderRefund } from '../api'
+import { newClientId } from '@/services/id'
 
 const props = defineProps<{ order: TravelOrder }>()
 
@@ -21,11 +22,11 @@ function getIdempotencyKey() {
     const storedKey = window.sessionStorage.getItem(storageKey)
     if (storedKey) return storedKey
 
-    const key = crypto.randomUUID()
+    const key = newClientId()
     window.sessionStorage.setItem(storageKey, key)
     return key
   } catch {
-    return crypto.randomUUID()
+    return newClientId()
   }
 }
 

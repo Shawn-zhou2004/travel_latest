@@ -1,6 +1,7 @@
 import { computed, ref, shallowRef } from 'vue'
 import { defineStore } from 'pinia'
 import { createDocxExport, getExportDownloadUrl, getExportTask, retryExportTask, type ExportTask } from '../exportApi'
+import { newClientId } from '@/services/id'
 
 export type ExportState = 'idle' | 'submitting' | 'queued' | 'running' | 'succeeded' | 'failed' | 'unavailable'
 
@@ -89,7 +90,7 @@ export const useItineraryExportStore = defineStore('itinerary-export', () => {
     state.value = 'submitting'
     message.value = ''
     try {
-      createIdempotencyKey ??= crypto.randomUUID()
+      createIdempotencyKey ??= newClientId()
       const createdTask = await createDocxExport(itineraryId, versionNo, createIdempotencyKey)
       if (runVersion !== pollVersion.value) return
       applyTask(createdTask)

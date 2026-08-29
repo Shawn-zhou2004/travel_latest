@@ -7,6 +7,7 @@ import { useItineraryStore } from '../stores/itinerary'
 import { useItineraryExportStore } from '../stores/export'
 import { acceptCollaborator, createShareToken, deleteItinerary, getCompanionWorkspace, getItinerary, inviteCollaborator, listItineraryVersions, removeItineraryDay, searchPOIs, type CompanionWorkspaceSummary, type ItineraryEvent, type ItineraryVersion, type POIRecord } from '../api'
 import { normalizeApiError } from '@/services/api'
+import { newClientId } from '@/services/id'
 import { closeCompanionPlan, completeCompanionPlan } from '@/features/community/companionPlansApi'
 import Timeline from '../components/Timeline.vue'
 import MapPanel from '../components/MapPanel.vue'
@@ -192,7 +193,7 @@ async function confirmDayRemoval() {
   deletingDay.value = true
   deletionError.value = ''
   try {
-    const result = await removeItineraryDay(props.itineraryId, store.version, crypto.randomUUID(), dayId)
+    const result = await removeItineraryDay(props.itineraryId, store.version, newClientId(), dayId)
     if (result.code === 'APPLIED' && result.snapshot && result.current_version !== null) {
       store.setSnapshot(result.snapshot, result.current_version)
       activeDay.value = result.snapshot.days.length ? Math.max(0, removedIndex - 1) : 0

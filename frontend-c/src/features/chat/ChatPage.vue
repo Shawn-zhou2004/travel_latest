@@ -7,6 +7,7 @@ import ChatComposer from './ChatComposer.vue'
 import ChatHistory from './ChatHistory.vue'
 import { connectConversationRealtime, listConversations, listMessages, mergeChatMessages, sendMessage as sendChatMessage, type ChatMessage, type Conversation } from './api'
 import { useReveal } from '@/composables/useReveal'
+import { newClientId } from '@/services/id'
 
 const props = defineProps<{ conversationId?: string }>()
 const router = useRouter()
@@ -61,7 +62,7 @@ function connectSocket() {
 async function sendMessage(body: string) {
   if (!props.conversationId) return
   try {
-    const clientMessageId = crypto.randomUUID()
+    const clientMessageId = newClientId()
     const pending: ChatMessage = { id: clientMessageId, conversation_id: props.conversationId, client_message_id: clientMessageId, sender_id: auth.user?.id ?? '', message_type: 'text', body_text: body, payload_json: null, created_at: new Date().toISOString(), delivery: 'sending' }
     messages.value.push(pending)
     const response = await sendChatMessage(props.conversationId, clientMessageId, body)

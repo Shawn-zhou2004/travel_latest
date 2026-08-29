@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { Check, CircleAlert, RefreshCw, Sparkles } from 'lucide-vue-next'
 import { createMembershipPurchase, listPublishedMembershipPlans, type MembershipPlan } from './api'
 import { normalizeApiError } from '@/services/api'
+import { newClientId } from '@/services/id'
 
 const plans = ref<MembershipPlan[]>([])
 const loading = ref(true)
@@ -31,7 +32,7 @@ async function purchase(plan: MembershipPlan) {
   if (!plan.purchasable || purchasing.value) return
   purchasing.value = plan.id
   try {
-    const created = await createMembershipPurchase(plan.id, crypto.randomUUID())
+    const created = await createMembershipPurchase(plan.id, newClientId())
     await router.push(`/memberships/pay/${created.id}`)
   } catch (cause) {
     error.value = normalizeApiError(cause).message
