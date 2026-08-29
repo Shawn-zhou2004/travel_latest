@@ -62,9 +62,8 @@ function clearSearch() {
   destinationLoading.value = false
 }
 
-function onDestinationInput() {
+function searchDestination() {
   formError.value = ''
-  if (selectedDestination.value?.name !== destinationQuery.value) selectedDestination.value = null
   clearSearch()
   const query = destinationQuery.value.trim()
   if (!query) {
@@ -91,6 +90,11 @@ function onDestinationInput() {
       if (request === searchSequence) destinationLoading.value = false
     }
   }, 250)
+}
+
+function onDestinationInput() {
+  if (selectedDestination.value?.name !== destinationQuery.value) selectedDestination.value = null
+  searchDestination()
 }
 
 function selectDestination(destination: DestinationOption) {
@@ -309,7 +313,7 @@ onMounted(async () => {
           <label for="destination">目的地</label>
           <div class="combobox-wrap">
             <Search :size="18" aria-hidden="true" />
-            <input id="destination" v-model="destinationQuery" role="combobox" aria-autocomplete="list" :aria-controls="'destination-results'" :aria-expanded="destinationOpen" :aria-activedescendant="activeOption >= 0 ? `destination-option-${activeOption}` : undefined" autocomplete="off" placeholder="搜索城市、区县或景区" @input="onDestinationInput" @keydown="onDestinationKeydown" @focus="destinationQuery.trim() && (destinationOpen = true)">
+            <input id="destination" v-model="destinationQuery" role="combobox" aria-autocomplete="list" :aria-controls="'destination-results'" :aria-expanded="destinationOpen" :aria-activedescendant="activeOption >= 0 ? `destination-option-${activeOption}` : undefined" autocomplete="off" placeholder="搜索城市、区县或景区" @input="onDestinationInput" @change="searchDestination" @compositionend="searchDestination" @keydown="onDestinationKeydown" @focus="destinationQuery.trim() && (destinationOpen = true)">
           </div>
           <Transition name="fade">
             <p v-if="selectedDestination" class="selected-destination"><Check :size="15" />已选择：{{ selectedDestination.name }} <span>{{ selectedDestination.display_address }}</span></p>
